@@ -1,19 +1,46 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+  const { register, isLoading } = useAuth();
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
     agreeToTerms: false,
   });
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement registration logic
-    console.log('Registration form submitted:', formData);
+    setError('');
+
+    // Validation
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (!formData.agreeToTerms) {
+      setError('Please agree to the terms and conditions');
+      return;
+    }
+
+    try {
+      await register({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+      });
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Registration failed');
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,20 +60,45 @@ const RegisterPage = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-              Full Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="input-field"
-              placeholder="Enter your full name"
-            />
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+              {error}
+            </div>
+          )}
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
+                First Name
+              </label>
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+                disabled={isLoading}
+                className="input-field"
+                placeholder="First name"
+              />
+            </div>
+            <div>
+              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
+                Last Name
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+                disabled={isLoading}
+                className="input-field"
+                placeholder="Last name"
+              />
+            </div>
           </div>
 
           <div>
@@ -60,6 +112,7 @@ const RegisterPage = () => {
               value={formData.email}
               onChange={handleChange}
               required
+              disabled={isLoading}
               className="input-field"
               placeholder="Enter your email"
             />
@@ -76,11 +129,13 @@ const RegisterPage = () => {
               value={formData.password}
               onChange={handleChange}
               required
+              disabled={isLoading}
               className="input-field"
               placeholder="Create a strong password"
+              minLength={8}
             />
             <p className="mt-1 text-xs text-gray-500">
-              Must be at least 8 characters with uppercase, lowercase, and numbers
+              Must be at least 8 characters
             </p>
           </div>
 
@@ -95,6 +150,7 @@ const RegisterPage = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
+              disabled={isLoading}
               className="input-field"
               placeholder="Confirm your password"
             />
@@ -109,6 +165,7 @@ const RegisterPage = () => {
                 checked={formData.agreeToTerms}
                 onChange={handleChange}
                 required
+                disabled={isLoading}
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
             </div>
@@ -128,10 +185,10 @@ const RegisterPage = () => {
 
           <button
             type="submit"
-            className="w-full btn-primary"
-            disabled={!formData.agreeToTerms}
+            className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading || !formData.agreeToTerms}
           >
-            Create Account
+            {isLoading ? 'Creating Account...' : 'Create Account'}
           </button>
         </form>
 

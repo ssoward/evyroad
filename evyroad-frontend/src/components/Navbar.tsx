@@ -1,10 +1,16 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const Navbar = () => {
   const location = useLocation();
+  const { user, isAuthenticated, logout, isLoading } = useAuth();
 
   const isActive = (path: string) => {
     return location.pathname === path;
+  };
+
+  const handleLogout = () => {
+    logout();
   };
 
   return (
@@ -21,56 +27,77 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link
-              to="/dashboard"
-              className={`${
-                isActive('/dashboard') ? 'nav-link-active' : 'nav-link'
-              }`}
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/bikes"
-              className={`${
-                isActive('/bikes') ? 'nav-link-active' : 'nav-link'
-              }`}
-            >
-              My Bikes
-            </Link>
-            <Link
-              to="/trips"
-              className={`${
-                isActive('/trips') ? 'nav-link-active' : 'nav-link'
-              }`}
-            >
-              Trips
-            </Link>
-            <Link
-              to="/store"
-              className={`${
-                isActive('/store') ? 'nav-link-active' : 'nav-link'
-              }`}
-            >
-              Store
-            </Link>
-          </div>
+          {/* Navigation Links - only show if authenticated */}
+          {isAuthenticated && (
+            <div className="hidden md:flex items-center space-x-8">
+              <Link
+                to="/dashboard"
+                className={`${
+                  isActive('/dashboard') ? 'nav-link-active' : 'nav-link'
+                }`}
+              >
+                Dashboard
+              </Link>
+              <Link
+                to="/bikes"
+                className={`${
+                  isActive('/bikes') ? 'nav-link-active' : 'nav-link'
+                }`}
+              >
+                My Bikes
+              </Link>
+              <Link
+                to="/trips"
+                className={`${
+                  isActive('/trips') ? 'nav-link-active' : 'nav-link'
+                }`}
+              >
+                Trips
+              </Link>
+              <Link
+                to="/store"
+                className={`${
+                  isActive('/store') ? 'nav-link-active' : 'nav-link'
+                }`}
+              >
+                Store
+              </Link>
+            </div>
+          )}
 
           {/* Auth Links */}
           <div className="flex items-center space-x-4">
-            <Link
-              to="/login"
-              className="text-gray-600 hover:text-primary-600 font-medium"
-            >
-              Sign In
-            </Link>
-            <Link
-              to="/register"
-              className="btn-primary"
-            >
-              Get Started
-            </Link>
+            {isAuthenticated ? (
+              <>
+                {/* User menu for authenticated users */}
+                <span className="text-gray-700 text-sm">
+                  Welcome, {user?.firstName}!
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="text-gray-600 hover:text-primary-600 font-medium"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Signing out...' : 'Sign Out'}
+                </button>
+              </>
+            ) : (
+              <>
+                {/* Login/Register for unauthenticated users */}
+                <Link
+                  to="/login"
+                  className="text-gray-600 hover:text-primary-600 font-medium"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="btn-primary"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
