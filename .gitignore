@@ -1,0 +1,84 @@
+# EvyRoad Project .gitignore
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.staging
+.env.production
+.env.*.local
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+build/
+**/dist/
+**/build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+.tmp/
+temp/
+tmp/
+
+# Cache
+.cache/
+**/.vite/
+**/.parcel-cache/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage/
+*.lcov
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+*.csr
+
+# Deployment specific
+deploy-config.local.sh
+production.env
+
+# OS generated files
+.cache
+.pnp
+.pnp.js
+.eslintcache
