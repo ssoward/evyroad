@@ -11,6 +11,10 @@ import DashboardPage from './pages/DashboardPage';
 import BikesPage from './pages/BikesPage';
 import TripsPage from './pages/TripsPage';
 import StorePage from './pages/StorePage';
+import RoutePlanningPage from './pages/RoutePlanningPage';
+import MaintenancePage from './pages/MaintenancePage';
+import TripGalleryPage from './pages/TripGalleryPage';
+import CommunityPage from './pages/CommunityPage';
 import './App.css';
 
 // Create a client
@@ -64,6 +68,38 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <StorePage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/route-planning" 
+                  element={
+                    <ProtectedRoute>
+                      <RoutePlanningPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/maintenance" 
+                  element={
+                    <ProtectedRoute>
+                      <MaintenancePage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/gallery" 
+                  element={
+                    <ProtectedRoute>
+                      <TripGalleryPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/community" 
+                  element={
+                    <ProtectedRoute>
+                      <CommunityPage />
                     </ProtectedRoute>
                   } 
                 />

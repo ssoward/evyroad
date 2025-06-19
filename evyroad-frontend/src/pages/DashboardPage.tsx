@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+import WeatherWidget from '../components/WeatherWidget';
+
 const DashboardPage = () => {
   return (
     <div className="max-w-7xl mx-auto">
@@ -65,10 +68,62 @@ const DashboardPage = () => {
         </div>
       </div>
 
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        {/* Weather Widget */}
+        <div className="lg:col-span-1">
+          <WeatherWidget />
+        </div>
+
+        {/* Quick Actions */}
+        <div className="lg:col-span-2">
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Link
+                to="/route-planning"
+                className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center group"
+              >
+                <div className="text-4xl mb-2">🗺️</div>
+                <p className="text-sm font-medium text-gray-900 group-hover:text-primary-700">Plan Route</p>
+              </Link>
+              
+              <Link
+                to="/maintenance"
+                className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center group"
+              >
+                <div className="text-4xl mb-2">🔧</div>
+                <p className="text-sm font-medium text-gray-900 group-hover:text-primary-700">Maintenance</p>
+              </Link>
+              
+              <Link
+                to="/gallery"
+                className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center group"
+              >
+                <div className="text-4xl mb-2">📸</div>
+                <p className="text-sm font-medium text-gray-900 group-hover:text-primary-700">Trip Gallery</p>
+              </Link>
+              
+              <Link
+                to="/community"
+                className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center group"
+              >
+                <div className="text-4xl mb-2">👥</div>
+                <p className="text-sm font-medium text-gray-900 group-hover:text-primary-700">Community</p>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Trips */}
         <div className="card">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Trips</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-gray-900">Recent Trips</h2>
+            <Link to="/trips" className="text-primary-600 hover:text-primary-700 text-sm font-medium">
+              View All
+            </Link>
+          </div>
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div>
@@ -100,42 +155,42 @@ const DashboardPage = () => {
           </div>
         </div>
 
-        {/* Quick Actions */}
+        {/* Upcoming Maintenance */}
         <div className="card">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <button className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors">
-              <div className="text-center">
-                <svg className="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                <p className="text-sm font-medium text-gray-900">Start New Trip</p>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-gray-900">Upcoming Maintenance</h2>
+            <Link to="/maintenance" className="text-primary-600 hover:text-primary-700 text-sm font-medium">
+              View All
+            </Link>
+          </div>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <div>
+                <h3 className="font-medium text-gray-900">Oil Change</h3>
+                <p className="text-sm text-gray-600">Due in 250 miles</p>
               </div>
-            </button>
-            <button className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors">
-              <div className="text-center">
-                <svg className="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                </svg>
-                <p className="text-sm font-medium text-gray-900">Get Certified</p>
+              <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">
+                Due Soon
+              </span>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div>
+                <h3 className="font-medium text-gray-900">Tire Inspection</h3>
+                <p className="text-sm text-gray-600">Due in 1,000 miles</p>
               </div>
-            </button>
-            <button className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors">
-              <div className="text-center">
-                <svg className="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                </svg>
-                <p className="text-sm font-medium text-gray-900">Invite Friends</p>
+              <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                On Track
+              </span>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div>
+                <h3 className="font-medium text-gray-900">Chain Lubrication</h3>
+                <p className="text-sm text-gray-600">Overdue by 50 miles</p>
               </div>
-            </button>
-            <button className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors">
-              <div className="text-center">
-                <svg className="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-                <p className="text-sm font-medium text-gray-900">Shop Store</p>
-              </div>
-            </button>
+              <span className="px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">
+                Overdue
+              </span>
+            </div>
           </div>
         </div>
       </div>
