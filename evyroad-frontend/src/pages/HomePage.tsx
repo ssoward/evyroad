@@ -48,46 +48,49 @@ const HomePage = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Track Your Routes</h3>
-              <p className="text-gray-600">Log every mile and create detailed records of your motorcycle adventures.</p>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900">GPS Tracking</h3>
+              <p className="text-gray-600">
+                Automatically track your rides with GPS or manually log your adventures with photo verification.
+              </p>
             </div>
+
             <div className="card text-center bg-white shadow-lg hover:shadow-xl transition-shadow">
               <div className="w-16 h-16 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 713.138-3.138z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Earn Certifications</h3>
-              <p className="text-gray-600">Complete iconic routes and earn digital badges to showcase your achievements.</p>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900">Route Certification</h3>
+              <p className="text-gray-600">
+                Complete iconic routes like Beartooth Canyon and Route 55 to earn digital badges and physical tokens.
+              </p>
             </div>
+
             <div className="card text-center bg-white shadow-lg hover:shadow-xl transition-shadow">
               <div className="w-16 h-16 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Connect with Riders</h3>
-              <p className="text-gray-600">Share your journeys and connect with fellow motorcycle enthusiasts worldwide.</p>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900">Merchandise Store</h3>
+              <p className="text-gray-600">
+                Purchase exclusive flags, patches, and tokens to commemorate your epic motorcycle adventures.
+              </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Call to Action */}
-      <div className="bg-primary-700 py-16">
+      {/* CTA Section */}
+      <div className="bg-primary-600 py-16">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h2 className="text-3xl font-bold text-white mb-4">Ready to Start Your Adventure?</h2>
-          <p className="text-primary-100 text-lg mb-8">
-            Join thousands of riders who trust EvyRoad to document their motorcycle journeys.
+          <h2 className="text-3xl font-bold text-white mb-4">Ready to Start Tracking?</h2>
+          <p className="text-xl text-white/90 mb-8">
+            Join thousands of riders documenting their motorcycle journeys.
           </p>
-          <div className="space-x-4">
-            <Link to="/register" className="bg-white text-primary-700 hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-colors">
-              Get Started Free
-            </Link>
-            <Link to="/about" className="border border-white text-white hover:bg-white hover:text-primary-700 font-medium py-3 px-8 rounded-lg transition-colors">
-              Learn More
-            </Link>
-          </div>
+          <Link to="/register" className="bg-white text-primary-600 font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors">
+            Create Your Account
+          </Link>
         </div>
       </div>
     </div>

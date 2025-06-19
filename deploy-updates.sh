@@ -28,6 +28,10 @@ rsync -avz --delete -e "ssh -i $SSH_KEY" \
   "$LOCAL_DIR/evyroad-frontend/dist/" \
   "$SERVER_USER@$SERVER_IP:/var/www/evyroad/frontend/"
 
+# Fix frontend permissions
+echo "🔧 Fixing frontend permissions..."
+ssh -i "$SSH_KEY" "$SERVER_USER@$SERVER_IP" "sudo chown -R nginx:nginx /var/www/evyroad/frontend/ && sudo find /var/www/evyroad/frontend/ -type f -exec chmod 644 {} \; && sudo find /var/www/evyroad/frontend/ -type d -exec chmod 755 {} \;"
+
 # Upload backend
 echo "📤 Uploading backend..."
 rsync -avz --delete -e "ssh -i $SSH_KEY" \

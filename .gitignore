@@ -7,6 +7,9 @@
 .env.staging
 .env.production
 .env.*.local
+# Backup .env files with sensitive data
+*.env.production.bak*
+*.env.*.bak*
 
 # Dependencies
 node_modules/
