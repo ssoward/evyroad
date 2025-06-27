@@ -78,10 +78,8 @@ coverage/
 
 # Deployment specific
 deploy-config.local.sh
+deploy-config.sh
 production.env
-
-# OS generated files
-.cache
-.pnp
-.pnp.js
-.eslintcache
+# AWS and sensitive deployment files
+.aws/
+aws-credentials.txt
