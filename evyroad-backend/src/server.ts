@@ -13,6 +13,7 @@ import bikeRoutes from './routes/bikes';
 import tripRoutes from './routes/trips';
 import routeRoutes from './routes/routes';
 import storeRoutes from './routes/store';
+import certificationRoutes from './routes/certifications';
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler';
@@ -43,7 +44,7 @@ app.use('/api/', limiter);
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL || 'https://evyroad.com',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -73,6 +74,7 @@ app.use('/api/v1/bikes', bikeRoutes);
 app.use('/api/v1/trips', tripRoutes);
 app.use('/api/v1/routes', routeRoutes);
 app.use('/api/v1/store', storeRoutes);
+app.use('/api/v1/certifications', certificationRoutes);
 
 // Error handling middleware
 app.use(notFound);

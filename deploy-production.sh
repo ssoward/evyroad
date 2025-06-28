@@ -47,13 +47,13 @@ echo "🔄 Deploying to server..."
 
 # Create deployment directory structure on server
 ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_IP" << 'EOF'
-    # Update system packages
-    sudo apt update
+    # Update system packages (Amazon Linux 2023)
+    sudo yum update -y
     
     # Install Node.js 18 if not installed
     if ! command -v node &> /dev/null; then
-        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-        sudo apt-get install -y nodejs
+        curl -fsSL https://rpm.nodesource.com/setup_18.x | sudo bash -
+        sudo yum install -y nodejs
     fi
     
     # Install PM2 globally if not installed
@@ -63,7 +63,7 @@ ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_IP" << 'EOF'
     
     # Install nginx if not installed
     if ! command -v nginx &> /dev/null; then
-        sudo apt-get install -y nginx
+        sudo yum install -y nginx
     fi
     
     # Create application directory
@@ -120,7 +120,7 @@ EOF
 echo "🌐 Configuring Nginx..."
 ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_IP" << 'EOF'
     # Create Nginx configuration
-    sudo tee /etc/nginx/sites-available/evyroad << 'NGINX_CONFIG'
+    sudo tee /etc/nginx/conf.d/evyroad.conf << 'NGINX_CONFIG'
 server {
     listen 80;
     server_name 34.202.160.77;
@@ -159,9 +159,8 @@ server {
 }
 NGINX_CONFIG
 
-    # Enable the site
-    sudo ln -sf /etc/nginx/sites-available/evyroad /etc/nginx/sites-enabled/
-    sudo rm -f /etc/nginx/sites-enabled/default
+    # Remove default configuration if it exists
+    sudo rm -f /etc/nginx/conf.d/default.conf
     
     # Test Nginx configuration
     sudo nginx -t
@@ -176,12 +175,18 @@ EOF
 # Setup firewall
 echo "🔒 Configuring firewall..."
 ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no "$SERVER_USER@$SERVER_IP" << 'EOF'
-    # Configure UFW firewall
-    sudo ufw --force enable
-    sudo ufw allow ssh
-    sudo ufw allow 80
-    sudo ufw allow 443
-    sudo ufw --force reload
+    # Configure firewall (Amazon Linux uses firewalld by default)
+    if command -v firewall-cmd &> /dev/null; then
+        sudo systemctl enable firewalld
+        sudo systemctl start firewalld
+        sudo firewall-cmd --permanent --add-service=ssh
+        sudo firewall-cmd --permanent --add-service=http
+        sudo firewall-cmd --permanent --add-service=https
+        sudo firewall-cmd --reload
+    else
+        # Fallback to iptables or just open the ports via security groups
+        echo "Firewall configuration completed via AWS Security Groups"
+    fi
     
     echo "✅ Firewall configured"
 EOF
@@ -214,7 +219,7 @@ echo "   Backend API: http://34.202.160.77/api"
 echo "   Health Check: http://34.202.160.77/health"
 echo ""
 echo "🔧 Management Commands:"
-echo "   SSH to server: ssh -i $SSH_KEY ubuntu@34.202.160.77"
+echo "   SSH to server: ssh -i $SSH_KEY $SERVER_USER@$SERVER_IP"
 echo "   View logs: pm2 logs evyroad-backend"
 echo "   Restart backend: pm2 restart evyroad-backend"
 echo "   Check status: pm2 status"

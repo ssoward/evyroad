@@ -15,6 +15,7 @@ import RoutePlanningPage from './pages/RoutePlanningPage';
 import MaintenancePage from './pages/MaintenancePage';
 import TripGalleryPage from './pages/TripGalleryPage';
 import CommunityPage from './pages/CommunityPage';
+import TripDetailPage from './pages/TripDetailPage';
 import './App.css';
 
 // Create a client
@@ -60,6 +61,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <TripsPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/trips/:tripId" 
+                  element={
+                    <ProtectedRoute>
+                      <TripDetailPage />
                     </ProtectedRoute>
                   } 
                 />

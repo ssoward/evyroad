@@ -34,7 +34,7 @@ interface RegisterData {
 }
 
 // API endpoints
-const API_BASE = 'http://localhost:3001/api/v1';
+const API_BASE = 'https://evyroad.com/api/v1';
 
 // Create context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
