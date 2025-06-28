@@ -83,3 +83,11 @@ production.env
 # AWS and sensitive deployment files
 .aws/
 aws-credentials.txt
+
+# Deployment configuration files (contain sensitive credentials)
+deploy-config.sh
+deploy-*.sh
+DEPLOYMENT_CONFIG_SUMMARY.md
+DEPLOYMENT_*.md
+*.pem
+*.key
