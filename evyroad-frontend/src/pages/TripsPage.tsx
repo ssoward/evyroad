@@ -83,11 +83,19 @@ const TripsPage: React.FC = () => {
       
       let endpoint = '/trips';
       let params = new URLSearchParams();
+      let response;
       
       if (!token) {
-        // Use demo endpoint if not authenticated
+        // Use demo endpoint if not authenticated - use fetch to avoid auth headers
         endpoint = '/trips/demo';
         console.log('Using demo endpoint:', endpoint);
+        const baseURL = import.meta.env.VITE_API_URL || 'https://evyroad.com/api/v1';
+        const fetchResponse = await fetch(`${baseURL}${endpoint}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        response = { data: await fetchResponse.json() };
       } else {
         // Use authenticated endpoint with filters
         console.log('Using authenticated endpoint:', endpoint);
@@ -96,11 +104,11 @@ const TripsPage: React.FC = () => {
         }
         params.append('sortBy', sortBy);
         params.append('sortOrder', 'desc');
+        
+        const url = params.toString() ? `${endpoint}?${params.toString()}` : endpoint;
+        console.log('Making request to:', url);
+        response = await api.get(url);
       }
-
-      const url = params.toString() ? `${endpoint}?${params.toString()}` : endpoint;
-      console.log('Making request to:', url);
-      const response = await api.get(url);
       
       if (response.data.success) {
         setTrips(response.data.data.trips);
@@ -120,10 +128,16 @@ const TripsPage: React.FC = () => {
           // We had a token but it was invalid, try demo mode
           console.log('Auth failed with token, falling back to demo mode');
           try {
-            const response = await api.get('/trips/demo');
-            if (response.data.success) {
-              setTrips(response.data.data.trips);
-              setStats(response.data.data.stats);
+            const baseURL = import.meta.env.VITE_API_URL || 'https://evyroad.com/api/v1';
+            const fetchResponse = await fetch(`${baseURL}/trips/demo`, {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const responseData = await fetchResponse.json();
+            if (responseData.success) {
+              setTrips(responseData.data.trips);
+              setStats(responseData.data.stats);
               setError('Showing demo trips. Login to view your personal trips.');
               return;
             }
