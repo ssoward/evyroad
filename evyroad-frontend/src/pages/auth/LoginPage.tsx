@@ -40,6 +40,16 @@ const LoginPage = () => {
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Welcome Back</h1>
           <p className="text-gray-600 mt-2">Sign in to your EvyRoad account</p>
+          
+          {/* Demo credentials info */}
+          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+            <p className="text-sm text-blue-800">
+              <strong>Demo Account:</strong> test@evyroad.com / testpassword123
+            </p>
+            <p className="text-xs text-blue-600 mt-1">
+              Use these credentials to explore the app, or register your own account below.
+            </p>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">

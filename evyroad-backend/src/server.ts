@@ -19,6 +19,10 @@ import certificationRoutes from './routes/certifications';
 import { errorHandler } from './middleware/errorHandler';
 import { notFound } from './middleware/notFound';
 
+// Import storage for initialization
+import { userStorage } from './storage/userStorage';
+import bcrypt from 'bcrypt';
+
 // Load environment variables
 dotenv.config();
 
@@ -81,10 +85,26 @@ app.use(notFound);
 app.use(errorHandler);
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`🚀 EvyRoad Backend API server running on port ${PORT}`);
   console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 Health check: http://localhost:${PORT}/health`);
+  
+  // Initialize test user for demo purposes
+  if (userStorage.count() === 0) {
+    try {
+      const hashedPassword = await bcrypt.hash('testpassword123', 10);
+      userStorage.create({
+        email: 'test@evyroad.com',
+        password: hashedPassword,
+        firstName: 'Test',
+        lastName: 'User'
+      });
+      console.log('🧪 Test user created: test@evyroad.com / testpassword123');
+    } catch (error) {
+      console.error('Failed to create test user:', error);
+    }
+  }
 });
 
 export default app;
