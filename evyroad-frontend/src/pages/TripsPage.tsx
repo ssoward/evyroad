@@ -58,7 +58,7 @@ interface TripStats {
 }
 
 const TripsPage: React.FC = () => {
-  const { isAuthenticated, tokens, user, refreshToken } = useAuth();
+  const { isAuthenticated, tokens, refreshToken } = useAuth();
   const [trips, setTrips] = useState<Trip[]>([]);
   const [stats, setStats] = useState<TripStats | null>(null);
   const [loading, setLoading] = useState(true);
