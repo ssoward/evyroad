@@ -5,6 +5,7 @@ import api from '../services/api';
 import CreateTripModal from '../components/trips/CreateTripModal';
 import EditTripModal from '../components/trips/EditTripModal';
 import TestLogin from '../components/auth/TestLogin';
+import { useAuth } from '../contexts/AuthContext';
 
 // Trip interfaces
 interface TripMetrics {
@@ -57,6 +58,7 @@ interface TripStats {
 }
 
 const TripsPage: React.FC = () => {
+  const { isAuthenticated, tokens, user, refreshToken } = useAuth();
   const [trips, setTrips] = useState<Trip[]>([]);
   const [stats, setStats] = useState<TripStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -70,22 +72,20 @@ const TripsPage: React.FC = () => {
   // Fetch trips and stats
   useEffect(() => {
     fetchTrips();
-  }, [filterStatus, sortBy]);
+  }, [filterStatus, sortBy, isAuthenticated]); // Add isAuthenticated dependency
 
   const fetchTrips = async () => {
     try {
       setLoading(true);
+      setError('');
       
-      // Check if user is authenticated
-      const token = localStorage.getItem('token') || localStorage.getItem('accessToken') || localStorage.getItem('evyroad_tokens');
-      
-      console.log('Token check:', token ? 'Token found' : 'No token found');
+      console.log('Auth status:', isAuthenticated ? 'Authenticated' : 'Not authenticated');
       
       let endpoint = '/trips';
       let params = new URLSearchParams();
       let response;
       
-      if (!token) {
+      if (!isAuthenticated) {
         // Use demo endpoint if not authenticated - use fetch to avoid auth headers
         endpoint = '/trips/demo';
         console.log('Using demo endpoint:', endpoint);
@@ -107,7 +107,25 @@ const TripsPage: React.FC = () => {
         
         const url = params.toString() ? `${endpoint}?${params.toString()}` : endpoint;
         console.log('Making request to:', url);
-        response = await api.get(url);
+        
+        try {
+          response = await api.get(url);
+        } catch (authError: any) {
+          // If authenticated request fails, try to refresh token and retry
+          if (authError.response?.status === 401 && tokens?.refreshToken) {
+            console.log('Token expired, attempting refresh...');
+            try {
+              await refreshToken();
+              // Retry the request after token refresh
+              response = await api.get(url);
+            } catch (refreshError) {
+              console.error('Token refresh failed:', refreshError);
+              throw authError; // Re-throw original error
+            }
+          } else {
+            throw authError;
+          }
+        }
       }
       
       if (response.data.success) {

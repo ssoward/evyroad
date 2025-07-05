@@ -81,7 +81,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     };
 
+    // Listen for unauthorized events from API interceptor
+    const handleUnauthorized = () => {
+      console.log('Received unauthorized event, logging out user');
+      logout();
+    };
+
+    window.addEventListener('auth:unauthorized', handleUnauthorized);
+
     initializeAuth();
+
+    return () => {
+      window.removeEventListener('auth:unauthorized', handleUnauthorized);
+    };
   }, []);
 
   // Fetch user info with access token
